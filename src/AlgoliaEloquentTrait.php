@@ -6,6 +6,19 @@ use Illuminate\Support\Facades\App;
 
 trait AlgoliaEloquentTrait
 {
+
+    /**
+     * Boot the trait by registering the Cache observer with the model
+     */
+    public static function bootAlgoliaEloquentTrait()
+    {
+        if (new static instanceof Model) {
+            static::observe(App::make('\AlgoliaSearch\Laravel\EloquentSubscriber'));
+        } else {
+            throw new \Exception("This trait can ony be used in Eloquent models.");
+        }
+    }
+
     /**
      * @var string
      */
@@ -16,7 +29,7 @@ trait AlgoliaEloquentTrait
      *
      * @param bool $safe
      */
-    public function _reindex($safe = true)
+    public function _algreindex($safe = true, $batch = 100, $query = '')
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -24,7 +37,12 @@ trait AlgoliaEloquentTrait
         $indices = $modelHelper->getIndices($this);
         $indicesTmp = $safe ? $modelHelper->getIndicesTmp($this) : $indices;
 
-        static::chunk(100, function ($models) use ($indicesTmp, $modelHelper) {
+        $staticInstance = new static;
+        if ( ! empty($query)) {
+            $staticInstance = $staticInstance->whereRaw($query);
+        }
+
+        $staticInstance->chunk($batch, function ($models) use ($indicesTmp, $modelHelper) {
             /** @var \AlgoliaSearch\Index $index */
             foreach ($indicesTmp as $index) {
                 $records = [];
@@ -47,7 +65,7 @@ trait AlgoliaEloquentTrait
         }
     }
 
-    public function _clearIndices()
+    public function _algclearIndices()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -67,7 +85,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _browseFrom($query, $parameters = [], $cursor = null)
+    public function _algbrowseFrom($query, $parameters = [], $cursor = null)
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -92,7 +110,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _browse($query, $parameters = [])
+    public function _algbrowse($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -117,7 +135,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _search($query, $parameters = [])
+    public function _algsearch($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -136,7 +154,7 @@ trait AlgoliaEloquentTrait
         return $result;
     }
 
-    public function _setSettings()
+    public function _algsetSettings()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');

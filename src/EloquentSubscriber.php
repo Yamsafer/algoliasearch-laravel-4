@@ -27,7 +27,7 @@ class EloquentSubscriber
         return true;
     }
 
-    public function deleted($model)
+    public function deleting($model)
     {
         if (!$this->modelHelper->isAutoDelete($model)) {
             return true;
@@ -44,6 +44,6 @@ class EloquentSubscriber
     public function subscribe($events)
     {
         $events->listen('eloquent.saved*', '\AlgoliaSearch\Laravel\EloquentSubscriber@saved');
-        $events->listen('eloquent.deleted*', '\AlgoliaSearch\Laravel\EloquentSubscriber@deleted');
+        $events->listen('eloquent.deleted*', '\AlgoliaSearch\Laravel\EloquentSubscriber@deleting');
     }
 }
