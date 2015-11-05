@@ -9,6 +9,21 @@ class AlgoliaServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        Event::subscribe('\AlgoliaSearch\Laravel\EloquentSubscriber');
+        $this->registerCommands();
+    }
+
+    /**
+    * Register the commands.
+    *
+    * @return void
+    */
+    protected function registerCommands()
+    {
+        $this->app['algoliasearch.laravel.reindex'] = $this->app->share(function ($app)
+        {
+            return new ReindexCommand();
+        });
+
+        $this->commands('algoliasearch.laravel.reindex');
     }
 }
