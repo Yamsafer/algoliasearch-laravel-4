@@ -30,7 +30,7 @@ trait AlgoliaEloquentTrait
      *
      * @param bool $safe
      */
-    public function _algreindex($safe = true, $batch = 100, $query = '')
+    public function algreindex($safe = true, $batch = 100, $query = '')
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -66,7 +66,7 @@ trait AlgoliaEloquentTrait
         }
     }
 
-    public function _algclearIndices()
+    public function algclearIndices()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -86,7 +86,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _algbrowseFrom($query, $parameters = [], $cursor = null)
+    public function algbrowseFrom($query, $parameters = [], $cursor = null)
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -111,7 +111,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _algbrowse($query, $parameters = [])
+    public function algbrowse($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -136,7 +136,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function _algsearch($query, $parameters = [])
+    public function algsearch($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -155,7 +155,7 @@ trait AlgoliaEloquentTrait
         return $result;
     }
 
-    public function _algsetSettings()
+    public function algsetSettings()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -197,41 +197,6 @@ trait AlgoliaEloquentTrait
                     $index->setSettings($s);
             }
         }
-    }
-
-    /**
-     * @param $method
-     * @param $parameters
-     * @return mixed
-     */
-    public static function __callStatic($method, $parameters)
-    {
-        $instance = new static();
-        $overload_method = '_'.$method;
-
-        if (method_exists($instance, $overload_method)) {
-            return call_user_func_array([$instance, $overload_method], $parameters);
-        }
-
-        return parent::__callStatic($method, $parameters);
-    }
-
-    /**
-     * @param $method
-     * @param $parameters
-     * @return mixed
-     *
-     * Catch static calls call from within a class. Example : static::method();
-     */
-    public function __call($method, $parameters)
-    {
-        $overload_method = '_'.$method;
-
-        if (method_exists($this, $overload_method)) {
-            return call_user_func_array([$this, $overload_method], $parameters);
-        }
-
-        return parent::__call($method, $parameters);
     }
 
     /**
