@@ -21,6 +21,9 @@ class EloquentSubscriber
         foreach ($this->modelHelper->getIndices($model) as $index) {
             if ($this->modelHelper->indexOnly($model, $index->indexName)) {
                 $index->addObject($this->modelHelper->getAlgoliaRecord($model), $this->modelHelper->getKey($model));
+            } else if ($this->modelHelper->deleteOnly($model, $index->indexName)) {
+                // model was indexed and currently is not
+                $this->deleting($model);
             }
         }
 

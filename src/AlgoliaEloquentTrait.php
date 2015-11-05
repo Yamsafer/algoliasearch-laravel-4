@@ -2,6 +2,7 @@
 
 namespace AlgoliaSearch\Laravel;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 trait AlgoliaEloquentTrait

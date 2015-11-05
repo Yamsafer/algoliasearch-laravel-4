@@ -43,6 +43,11 @@ class ModelHelper
         return !method_exists($model, 'indexOnly') || $model->indexOnly($index_name);
     }
 
+    public function deleteOnly(Model $model, $index_name)
+    {
+        return method_exists($model, 'deleteOnly') && $model->deleteOnly($index_name);
+    }
+
     public function getObjectId(Model $model)
     {
         return $model->{$this->getObjectIdKey($model)};
