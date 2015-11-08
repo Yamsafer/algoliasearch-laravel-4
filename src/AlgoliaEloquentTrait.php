@@ -30,7 +30,7 @@ trait AlgoliaEloquentTrait
      *
      * @param bool $safe
      */
-    public function algreindex($safe = true, $batch = 100, $query = '')
+    public static function algreindex($safe = true, $batch = 100, $query = '')
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -66,7 +66,7 @@ trait AlgoliaEloquentTrait
         }
     }
 
-    public function algclearIndices()
+    public static function algclearIndices()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -86,7 +86,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function algbrowseFrom($query, $parameters = [], $cursor = null)
+    public static function algbrowseFrom($query, $parameters = [], $cursor = null)
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -111,7 +111,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function algbrowse($query, $parameters = [])
+    public static function algbrowse($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -136,7 +136,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public function algsearch($query, $parameters = [])
+    public static function algsearch($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -155,7 +155,7 @@ trait AlgoliaEloquentTrait
         return $result;
     }
 
-    public function algsetSettings()
+    public static function algsetSettings()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
