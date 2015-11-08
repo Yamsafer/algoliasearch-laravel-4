@@ -35,10 +35,10 @@ trait AlgoliaEloquentTrait
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
 
-        $indices = $modelHelper->getIndices($this);
-        $indicesTmp = $safe ? $modelHelper->getIndicesTmp($this) : $indices;
-
         $staticInstance = new static;
+        $indices = $modelHelper->getIndices($staticInstance);
+        $indicesTmp = $safe ? $modelHelper->getIndicesTmp($staticInstance) : $indices;
+
         if ( ! empty($query)) {
             $staticInstance = $staticInstance->whereRaw($query);
         }
@@ -71,7 +71,7 @@ trait AlgoliaEloquentTrait
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
 
-        $indices = $modelHelper->getIndices($this);
+        $indices = $modelHelper->getIndices(new static);
 
         /** @var \AlgoliaSearch\Index $index */
         foreach ($indices as $index) {
@@ -86,7 +86,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public static function algbrowseFrom($query, $parameters = [], $cursor = null)
+    public function algbrowseFrom($query, $parameters = [], $cursor = null)
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -111,7 +111,7 @@ trait AlgoliaEloquentTrait
      *
      * @return mixed
      */
-    public static function algbrowse($query, $parameters = [])
+    public function algbrowse($query, $parameters = [])
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
@@ -144,10 +144,10 @@ trait AlgoliaEloquentTrait
         $index = null;
 
         if (isset($parameters['index'])) {
-            $index = $modelHelper->getIndices($this, $parameters['index'])[0];
+            $index = $modelHelper->getIndices(new static, $parameters['index'])[0];
             unset($parameters['index']);
         } else {
-            $index = $modelHelper->getIndices($this)[0];
+            $index = $modelHelper->getIndices(new static)[0];
         }
 
         $result = $index->search($query, $parameters);
@@ -155,7 +155,7 @@ trait AlgoliaEloquentTrait
         return $result;
     }
 
-    public static function algsetSettings()
+    public function algsetSettings()
     {
         /** @var \AlgoliaSearch\Laravel\ModelHelper $modelHelper */
         $modelHelper = App::make('\AlgoliaSearch\Laravel\ModelHelper');
